@@ -1,11 +1,10 @@
-# Ex.No: 6               HOLT WINTERS METHOD
-### Date: 
+# Ex.No: 6 HOLT WINTERS METHOD->
+### Date: 06/04/2024
 
+## AIM:
+To create and implement Holt Winter's Method Model using python.
 
-
-### AIM:
-
-### ALGORITHM:
+## ALGORITHM:
 1. You import the necessary libraries
 2. You load a CSV file containing daily sales data into a DataFrame, parse the 'date' column as
 datetime, and perform some initial data exploration
@@ -17,16 +16,53 @@ datetime, and perform some initial data exploration
 8. You calculate the mean and standard deviation of the entire sales dataset, then fit a Holt-
 Winters model to the entire dataset and make future predictions
 9. You plot the original sales data and the predictions
-### PROGRAM:
+## PROGRAM:
+```
+NAME: Ragavendran A
+REGNO : 212222230114
+```
+```
+from statsmodels.tsa.holtwinters import ExponentialSmoothing
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_absolute_error,mean_squared_error
+import pandas as pd
 
-### OUTPUT:
+airline  = pd.read_csv('AirPassengers.csv',index_col='Month',parse_dates=True)
+airline.plot()
+airline.freq = 'MS'
+airline.index
+len(airline)
 
+train_airline = airline[:108] 
+test_airline = airline[108:] 
+fitted_model = ExponentialSmoothing(train_airline['#Passengers'],trend='mul',seasonal='mul',seasonal_periods=12).fit()
+test_predictions = fitted_model.forecast(36).rename('HW Test Forecast')
 
-TEST_PREDICTION
+test_predictions[:10]
+train_airline['#Passengers'].plot(legend=True,label='TRAIN')
+test_airline['#Passengers'].plot(legend=True,label='TEST',figsize=(12,8))
+plt.title('Train and Test Data');
 
+train_airline['#Passengers'].plot(legend=True,label='TRAIN')
+test_airline['#Passengers'].plot(legend=True,label='TEST',figsize=(12,8))
+test_predictions.plot(legend=True,label='PREDICTION')
+plt.title('Train, Test and Predicted Test using Holt Winters');
+print("Mean Absolute Error = ",mean_absolute_error(test_airline,test_predictions))
 
+final_model = ExponentialSmoothing(airline['#Passengers'],trend='mul',seasonal='mul',seasonal_periods=12).fit()
+forecast_predictions = final_model.forecast(steps=36)
 
-FINAL_PREDICTION
+airline['#Passengers'].plot(figsize=(12,8),legend=True,label='Current Airline Passengers')
+forecast_predictions.plot(legend=True,label='Forecasted Airline Passengers')
+plt.title('Airline Passenger Forecast');
+```
+## OUTPUT:
 
-### RESULT:
+### TEST_PREDICTION
+![out1](https://github.com/user-attachments/assets/b2e1e48b-fb60-4094-bd4c-29c1e295cd24)
+
+### FINAL_PREDICTION
+![out2](https://github.com/user-attachments/assets/66db14bf-f847-4db3-895f-13ea87449f46)
+
+## RESULT:
 Thus the program run successfully based on the Holt Winters Method model.
